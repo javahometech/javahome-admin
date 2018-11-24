@@ -1,0 +1,165 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2017-04-20T04:08:08Z",
+    "title": "JavaHomeAdmin"
+  },
+  "host": "uojnr9hd57.execute-api.us-east-1.amazonaws.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/student": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Input",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JavaHomeAddStudent"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "type": "application/json"
+            }
+          },
+          "500": {
+            "description": "500 response, Internel Server Error",
+            "schema": {
+              "type": "application/json"
+            }
+          }
+        },
+        "x-amazon-apigateway-request-validator": "Validate body",
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::353848682332:role/lambda_invoke_function_assume_apigw_role",
+          "responses": {
+            ".*\"statusCode\":.*500.*": {
+              "statusCode": "500",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"message\" : $util.parseJson($inputRoot.errorMessage).message \n}"
+              }
+            },
+            "default": {
+              "statusCode": "200",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"message\" : $inputRoot.message \n}"
+              }
+            }
+          },
+          "uri": "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-south-1:353848682332:function:JHAdminAddStudent/invocations",
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
+          "type": "aws"
+        }
+      },
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "type": "application/json"
+            }
+          },
+          "500": {
+            "description": "500 response, Internel Server Error",
+            "schema": {
+              "type": "application/json"
+            }
+          }
+        },
+        "x-amazon-apigateway-request-validator": false,
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::353848682332:role/lambda_invoke_function_assume_apigw_role",
+          "responses": {
+            ".*\"statusCode\":.*500.*": {
+              "statusCode": "500",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"message\" : $util.parseJson($inputRoot.errorMessage).message \n}"
+              }
+            },
+            "default": {
+              "statusCode": "200",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"body\" : $inputRoot.body \n}"
+              }
+            }
+          },
+          "uri": "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-south-1:353848682332:function:JHAdminGetStudents/invocations",
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
+          "type": "aws"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "JavaHomeAddStudent": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "title": "JavaHomeAddStudent",
+      "description": "A JavaHomeAddStudent for JavaHome Application",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "courses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "preferred_timings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "name",
+        "mobile",
+        "courses"
+      ]
+    }
+  },
+  "x-amazon-apigateway-request-validators": {
+    "Validate body": {
+      "validateRequestParameters": false,
+      "validateRequestBody": true
+    },
+    "Validate query string parameters and headers": {
+      "validateRequestParameters": true,
+      "validateRequestBody": false
+    }
+  }
+}
