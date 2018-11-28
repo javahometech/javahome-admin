@@ -166,6 +166,62 @@
           "type": "aws"
         }
       }
+    },
+    "/addfee": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Input",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JavaHomeFee"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "type": "application/json"
+            }
+          },
+          "500": {
+            "description": "500 response, Internel Server Error",
+            "schema": {
+              "type": "application/json"
+            }
+          }
+        },
+        "x-amazon-apigateway-request-validator": "Validate body",
+        "x-amazon-apigateway-integration": {
+          "credentials": "arn:aws:iam::353848682332:role/lambda_invoke_function_assume_apigw_role",
+          "responses": {
+            ".*\"statusCode\":.*500.*": {
+              "statusCode": "500",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"message\" : $util.parseJson($inputRoot.errorMessage).message \n}"
+              }
+            },
+            "default": {
+              "statusCode": "200",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"message\" : $inputRoot.message \n}"
+              }
+            }
+          },
+          "uri": "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-south-1:353848682332:function:JHAdminAddFee/invocations",
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
+          "type": "aws"
+        }
+      }
     }
   },
   "definitions": {
@@ -217,7 +273,11 @@
           "type": "string"
         },
         "regular_weekend": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "Weekend",
+            "Regular"
+          ]
         },
         "start_date": {
           "type": "string"
