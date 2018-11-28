@@ -213,13 +213,10 @@
       "description": "Training Batch Details",
       "type": "object",
       "properties": {
-        "name": {
+        "description": {
           "type": "string"
         },
         "regular_weekend": {
-          "type": "string"
-        },
-        "timings": {
           "type": "string"
         },
         "start_date": {
@@ -227,11 +224,41 @@
         }
       },
       "required": [
-        "name",
-        "timings",
         "start_date",
         "regular_weekend"
       ]
+    },
+    "JavaHomeFee": {
+      "type": "object",
+      "required": [
+        "total_fee",
+        "next_due_date",
+        "payments"
+      ],
+      "properties": {
+        "total_fee": {
+          "type": "integer"
+        },
+        "next_due_date": {
+          "type": "string"
+        },
+        "payments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "paid_amount": {
+                "type": "integer"
+              },
+              "time_stamp": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "title": "JavaHomeFee",
+      "description": "A JavaHomeFee for JavaHome Application"
     }
   },
   "x-amazon-apigateway-request-validators": {
