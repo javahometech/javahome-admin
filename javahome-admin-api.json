@@ -325,21 +325,28 @@
       "description": "Training Batch Details",
       "type": "object",
       "properties": {
-        "mobile": {
+        "year": {
           "type": "string"
         },
-        "description": {
+        "time_stamp": {
           "type": "string"
         },
-        "regular_weekend": {
-          "type": "string",
-          "enum": [
-            "Weekend",
-            "Regular"
-          ]
-        },
-        "start_date": {
-          "type": "string"
+        "batches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "statrt_data": {
+                "type": "string"
+              },
+              "regular_weekend": {
+                "type": "string"
+              },
+              "course": {
+                "type": "string"
+              }
+            }
+          }
         }
       },
       "required": [
