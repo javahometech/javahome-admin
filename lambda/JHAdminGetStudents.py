@@ -10,14 +10,18 @@ table = dynamodb.Table('javahome_students')
 def lambda_handler(event,context):
     try:
         search_expr = search_students(event)
-        students_resp = table.scan(FilterExpression=search_expr)
+        if search_expr is not None:
+            students_resp = table.scan(FilterExpression=search_expr)
+        else:
+            students_resp = table.scan()
         return {
-            'body': search_expr['Items']
+            'body': students_resp['Items']
         }
+
     except Exception as e:
         response = {
             'responseCode': 500,
-            'message': 'Error Searching students'
+            'message': str(e)
         }
         raise Exception(json.dumps(response))
 
