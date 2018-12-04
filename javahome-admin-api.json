@@ -415,14 +415,49 @@
         "mobile"
       ]
     },
+    "JavaHomeGetStudent": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "title": "JavaHomeBatch",
+      "description": "Training Batch Details",
+      "type": "object",
+      "properties": {
+        "search_fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "courses": {
+                "type": "array"
+              },
+              "mobile": {
+                "type": "string"
+              },
+              "prefferd_timings": {
+                "type": "array"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "start_date",
+        "regular_weekend",
+        "mobile"
+      ]
+    },
     "JavaHomeFee": {
       "type": "object",
       "required": [
         "total_fee",
-        "payments"
+        "payments",
+        "year",
+        "time_stamp"
       ],
       "properties": {
         "year": {
+          "type": "string"
+        },
+        "time_stamp": {
           "type": "string"
         },
         "total_fee": {
